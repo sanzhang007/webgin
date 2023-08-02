@@ -11,7 +11,6 @@ func main() {
 	//
 	r.LoadHTMLGlob("template/*")
 	r.StaticFile("static", "./static")
-
 	r.GET("/nodes", controlers.Nodes)
 	// r.GET("/nodes/:avg", controlers.Nodes)
 	// r.GET("/nodes/:avg/:limit", controlers.Nodes)
