@@ -1,6 +1,7 @@
 # gin 写的简单网站
 用于展示爬取的节点
 
+[节点分享链接](https://github.com/sanzhang007/node_free)
 ## models 数据库
 ### core 连接数据库
 // 修改为你的配置
