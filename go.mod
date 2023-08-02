@@ -1,4 +1,4 @@
-module webgin
+module github.com/sanzhang007/webgin
 
 go 1.20
 

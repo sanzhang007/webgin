@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"webgin/models"
+
+	"github.com/sanzhang007/webgin/models"
 
 	"github.com/gin-gonic/gin"
 )

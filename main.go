@@ -1,7 +1,7 @@
 package main
 
 import (
-	"webgin/controlers"
+	"github.com/sanzhang007/webgin/controlers"
 
 	"github.com/gin-gonic/gin"
 )

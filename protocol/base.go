@@ -2,7 +2,8 @@ package clash
 
 import (
 	"strings"
-	"webgin/utils"
+
+	"github.com/sanzhang007/webgin/utils"
 )
 
 type Baser interface {

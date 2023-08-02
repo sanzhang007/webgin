@@ -8,8 +8,10 @@ import (
 	"strings"
 	"text/template"
 	"time"
-	clash "webgin/protocol"
-	"webgin/utils"
+
+	clash "github.com/sanzhang007/webgin/protocol"
+
+	"github.com/sanzhang007/webgin/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-yaml/yaml"

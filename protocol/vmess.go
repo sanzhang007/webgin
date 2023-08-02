@@ -3,7 +3,8 @@ package clash
 import (
 	"strconv"
 	"strings"
-	"webgin/base64decode"
+
+	"github.com/sanzhang007/webgin/base64decode"
 
 	"github.com/go-yaml/yaml"
 )
