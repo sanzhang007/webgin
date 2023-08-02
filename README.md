@@ -7,7 +7,7 @@
 ```go
 cmd := "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local" 
 //改为自己的配置 root:123456对应用户和密码 test对应数据库名
-//sql语句创建 数据库 create database datebasename
+//sql语句创建 数据库 create database database_name
 ```
 ### nodes 表结构
 
