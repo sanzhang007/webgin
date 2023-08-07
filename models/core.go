@@ -19,5 +19,5 @@ func init() {
 		fmt.Println(err)
 	}
 
-	DB.AutoMigrate(&Nodes{})
+	DB.AutoMigrate(&Node1{})
 }

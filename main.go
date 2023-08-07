@@ -21,6 +21,8 @@ func main() {
 	// r.GET("/clash/:avg/:limit/", controlers.Clash)
 	// r.GET("/clash/:avg/:limit/:date", controlers.Clash)
 
+	r.GET("/yudou", controlers.Youdou)
+
 	r.GET("/clash-convert/", controlers.ClashConvert)
 	r.GET("/nodes-convert")
 	r.Run(":80")

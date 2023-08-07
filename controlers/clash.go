@@ -11,7 +11,7 @@ import (
 )
 
 func Clash(ctx *gin.Context) {
-	var nodes []models.Nodes
+	var nodes []models.Node1
 	ctx.Header("Content-Type", "text/plain; charset=utf-8")
 
 	limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "100"))

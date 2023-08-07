@@ -10,7 +10,7 @@ import (
 )
 
 func Nodes(ctx *gin.Context) {
-	var nodes []models.Nodes
+	var nodes []models.Node1
 	ctx.Header("Content-Type", "text/plain; charset=utf-8")
 	// limit := ctx.Param("limit")
 	// date := ctx.Param("date")
@@ -34,9 +34,15 @@ func Nodes(ctx *gin.Context) {
 	var builder strings.Builder
 
 	for _, n := range nodes {
-		builder.WriteString(fmt.Sprintf("####Ping: %d	AvgSpeed: %.2fMB	MaxSpeed: %.2fMB	SourceUrl: %s	CreateTime: %s	UpdateTime: %s	FailCount: %d\n", n.Ping, float64(n.AvgSpeed)/1024/1024, float64(n.MaxSpeed)/1024/1024, n.Url, n.CreateTime.Format("2006/01/02 15:04"), n.UpdateTime.Format("2006/01/02 15:04"), n.FailCount))
-		builder.WriteString(n.Link)
-		builder.WriteString("\n")
+		builder.WriteString(fmt.Sprintf("####Ping: %d	AvgSpeed: %.2fMB	MaxSpeed: %.2fMB	CreateTime: %s	UpdateTime: %s	FailCount: %d\n", n.Ping, float64(n.AvgSpeed)/1024/1024, float64(n.MaxSpeed)/1024/1024, n.CreateTime.Format("2006/01/02 15:04"), n.UpdateTime.Format("2006/01/02 15:04"), n.FailCount))
+		if !(strings.HasPrefix(n.Url, "https://free.iam7.tk/") && strings.HasPrefix(n.Link, "ssr://")) {
+			builder.WriteString(n.Link)
+			builder.WriteString("\n")
+		} else {
+			builder.WriteString("####")
+			builder.WriteString(n.Link)
+			builder.WriteString("\n")
+		}
 	}
 	ctx.String(200, builder.String())
 }
