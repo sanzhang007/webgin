@@ -2,7 +2,6 @@ package controlers
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/sanzhang007/webgin/models"
@@ -14,16 +13,16 @@ func Clash(ctx *gin.Context) {
 	var nodes []models.Node1
 	ctx.Header("Content-Type", "text/plain; charset=utf-8")
 
-	limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "100"))
-	date := ctx.Query("date")
-	fmt.Printf("err: %v\n", err)
-	avg_i, err := strconv.Atoi(ctx.DefaultQuery("avg_i", "0"))
-	fmt.Printf("err: %v\n", err)
+	// limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "100"))
+	// date := ctx.Query("date")
+	// fmt.Printf("err: %v\n", err)
+	// avg_i, err := strconv.Atoi(ctx.DefaultQuery("avg_i", "0"))
+	// fmt.Printf("err: %v\n", err)
 
-	avg_j, err := strconv.Atoi(ctx.DefaultQuery("avg_j", "11"))
-	fmt.Printf("err: %v\n", err)
+	// avg_j, err := strconv.Atoi(ctx.DefaultQuery("avg_j", "11"))
+	// fmt.Printf("err: %v\n", err)
 
-	models.DB.Limit(limit).Where(fmt.Sprintf(`(avg_speed > %d and avg_speed < %d) and (update_time like '%%%s%%')`, avg_i*1024*1024, avg_j*1024*1024, date)).Order("avg_speed desc").Find(&nodes)
+	models.DB.Where(`ping>0 order by ping`).Find(&nodes)
 	var builder strings.Builder
 
 	for _, n := range nodes {

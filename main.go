@@ -25,5 +25,5 @@ func main() {
 
 	r.GET("/clash-convert/", controlers.ClashConvert)
 	r.GET("/nodes-convert")
-	r.Run(":80")
+	r.Run(":65535")
 }
