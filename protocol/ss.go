@@ -50,6 +50,7 @@ func (ss *Ss) Parse(urlstring string) {
 		b, _ := base64.RawStdEncoding.DecodeString(userString[0])
 		tmp := strings.Split(string(b), ":")
 		if len(tmp) == 1 {
+			ss = &Ss{}
 			return
 		}
 		ss.Password = tmp[1]
