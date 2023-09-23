@@ -3,40 +3,25 @@ package base64decode
 import (
 	"encoding/base64"
 	"strings"
-	"unsafe"
 )
 
-func DecodeB64(s string) (string, error) {
-	// s = strings.ReplaceAll(s, "-", "+")
-	// s = strings.ReplaceAll(s, "_", "/")
-	// data, err := base64.StdEncoding.DecodeString(s)
-	// if err != nil {
-	// 	if data, err = base64.RawStdEncoding.DecodeString(s); err != nil {
-	// 		return "", err
-	// 	}
-	// }
-	// return string(data), nil
-	data, err := DecodeB64Bytes(s)
+func Base64Decode(str string) string {
+	// str := "SGVsbG8sIHdvcmxkIQ=="
+	dst := make([]byte, base64.StdEncoding.DecodedLen(len(str)))
+	n, err := base64.StdEncoding.Decode(dst, []byte(str))
 	if err != nil {
-		return "", err
+		// fmt.Printf("err: %v\n", err)
+		return str
 	}
-	return B2s(data), nil
+	dst = dst[:n]
+	return string(dst)
 }
 
-func DecodeB64Bytes(s string) ([]byte, error) {
-	s = strings.TrimSpace(s)
-	s = strings.ReplaceAll(s, "-", "+")
-	s = strings.ReplaceAll(s, "_", "/")
-	if pad := len(s) % 4; pad != 0 {
-		s += strings.Repeat("=", 4-pad)
+func Base64Decode_(str string) string {
+	s := strings.Split(str, "_")
+	var builder strings.Builder
+	for _, item := range s {
+		builder.WriteString(Base64Decode(item))
 	}
-	data, err := base64.StdEncoding.DecodeString(s)
-	if err != nil {
-		// URLEncoding
-		if data, err = base64.RawStdEncoding.DecodeString(s); err != nil {
-			return nil, err
-		}
-	}
-	return data, nil
+	return builder.String()
 }
-func B2s(b []byte) string { return *(*string)(unsafe.Pointer(&b)) } // tricks
