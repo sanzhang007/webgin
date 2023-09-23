@@ -2,6 +2,7 @@ package protocol
 
 import (
 	"log"
+	"net"
 	"net/url"
 	"regexp"
 	"strings"
@@ -26,7 +27,7 @@ type Ssr struct {
 	Link          string
 }
 
-func (ssr *Ssr) Parse(urlstring string) {
+func (ssr *Ssr) ParseTemp(urlstring string) {
 	builder := new(strings.Builder)
 	linkSplit := strings.Split(urlstring, "://")
 	// ctx := base64decode.Base64Decode(linkSplit[1])
@@ -65,4 +66,74 @@ func (ssr *Ssr) Parse(urlstring string) {
 	ssr.ProtocolParam = ""
 	ssr.Link = urlstring
 
+}
+
+// var (
+// 	NotSSRLink error = errors.New("not a shadowsocksR link")
+// )
+
+func (ssr *Ssr) Parse(link string) {
+	regex := regexp.MustCompile(`^ssr://([A-Za-z0-9+-=/_]+)`)
+	res := regex.FindAllStringSubmatch(link, 1)
+	b64 := ""
+	if len(res) > 0 && len(res[0]) > 1 {
+		b64 = res[0][1]
+	}
+	uri, err := utils.DecodeB64(b64)
+	if err != nil {
+		return
+	}
+	parts := strings.SplitN(uri, "/?", 2)
+	links := strings.Split(parts[0], ":")
+	if len(links) != 6 || len(parts) != 2 {
+		return
+	}
+	port := links[1]
+	pass, err := utils.DecodeB64(links[5])
+	if err != nil {
+		return
+	}
+	cipher := links[3]
+	if cipher == "none" {
+		cipher = "dummy"
+	}
+	ssr.Type = "ssr"
+	ssr.Name = ""
+	ssr.Server = links[0]
+	ssr.Port = port
+	ssr.Protocol = links[2]
+	ssr.Cipher = cipher
+	ssr.Obfs = links[4]
+	ssr.Password = pass
+	ssr.ObfsParam = ""
+	ssr.ProtocolParam = ""
+	ssr.Link = link
+	query := strings.ReplaceAll(parts[1], "+", "%2B")
+	if rawQuery, err := url.ParseQuery(query); err == nil {
+		obfsparam, err := utils.DecodeB64(rawQuery.Get("obfsparam"))
+		if err != nil {
+			return
+		}
+		ssr.ObfsParam = obfsparam
+		if obfsparam == "" {
+			obfsparam, err := utils.DecodeB64(rawQuery.Get("obfs-param"))
+			if err != nil {
+				return
+			}
+			ssr.ObfsParam = obfsparam
+		}
+		protoparam, err := utils.DecodeB64(rawQuery.Get("protoparam"))
+		if err != nil {
+			return
+		}
+		ssr.ProtocolParam = protoparam
+		remarks, err := utils.DecodeB64(rawQuery.Get("remarks"))
+		if err == nil {
+			if remarks == "" {
+				remarks = net.JoinHostPort(ssr.Server, ssr.Port)
+			}
+			ssr.Name = remarks
+			// ssr.Type = remarks
+		}
+	}
 }
