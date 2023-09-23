@@ -3,11 +3,13 @@ package protocol
 import (
 	"encoding/base64"
 	"fmt"
+	"net"
 	"net/url"
 	"regexp"
 	"strings"
 
 	"github.com/sanzhang007/webgin/base64decode"
+	"github.com/xxf098/lite-proxy/utils"
 )
 
 type Ss struct {
@@ -21,7 +23,7 @@ type Ss struct {
 	Link     string `gorm:"size:1024"`
 }
 
-func (ss *Ss) Parse(urlstring string) {
+func (ss *Ss) ParseTemp(urlstring string) {
 	builder := new(strings.Builder)
 	urlSpilt := strings.Split(urlstring, "://")
 	builder.WriteString(urlSpilt[0])
@@ -59,4 +61,70 @@ func (ss *Ss) Parse(urlstring string) {
 		ss.Cipher = userString[0]
 		ss.Password = userString[1]
 	}
+}
+
+func decodeB64SS(link string) (string, error) {
+	if strings.Contains(link, "@") {
+		return link, nil
+	}
+	regex := regexp.MustCompile(`^ss://([A-Za-z0-9+-=/_]+)`)
+	res := regex.FindAllStringSubmatch(link, 1)
+	b64 := ""
+	if len(res) > 0 && len(res[0]) > 1 {
+		b64 = res[0][1]
+	}
+	if b64 == "" {
+		return link, nil
+	}
+	uri, err := utils.DecodeB64(b64)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("ss://%s", uri), nil
+}
+
+func (ss *Ss) Parse(link1 string) {
+	link, err := decodeB64SS(link1)
+	if err != nil {
+		return
+	}
+	u, err := url.Parse(link)
+	if err != nil {
+		return
+	}
+	if u.Scheme != "ss" {
+		return
+	}
+	pass := u.User.Username()
+	hostport := u.Host
+	host, port1, err := net.SplitHostPort(hostport)
+	if err != nil {
+		return
+	}
+	userinfo, err := utils.DecodeB64(pass)
+	if err != nil || !strings.Contains(userinfo, ":") {
+		pw, _ := u.User.Password()
+		if pw == "" {
+			return
+		}
+		userinfo = fmt.Sprintf("%s:%s", u.User.Username(), pw)
+	}
+	splits := strings.SplitN(userinfo, ":", 2)
+	method := splits[0]
+	pass = splits[1]
+	remarks := u.Fragment
+	if remarks == "" {
+		if splits := strings.Split(link1, "#"); len(splits) > 1 {
+			if rmk, err := url.QueryUnescape(splits[1]); err == nil {
+				remarks = rmk
+			}
+		}
+	}
+	ss.Name = remarks
+	ss.Server = host
+	ss.Port = port1
+	ss.Password = pass
+	ss.Cipher = method
+	ss.Type = "ss"
+	ss.Link = link1
 }
