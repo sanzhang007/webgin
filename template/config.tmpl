@@ -81,14 +81,13 @@ proxies:
 */}}{{if $proxy.ProtocolParam}}, protocol-param: "{{$proxy.ProtocolParam}}"{{end}}{{/*
 */}}{{if $proxy.Network}}, network: {{$proxy.Network}}{{end}}{{/*
 */}}{{if $proxy.WsOpts.Path}}, ws-opts: {path: "{{$proxy.WsOpts.Path}}"{{/*
-*/}}, headers: {Host: "{{$proxy.WsOpts.Headers.Host}}"}}{{end}}{{/*
+*/}}, headers: {host: "{{$proxy.WsOpts.Headers.Host}}"}}{{end}}{{/*
 */}}}
 {{end}}
 
 proxy-groups:
   - name: 🚀 节点选择
     type: select
-    interface-name: WLAN //网卡选择
     proxies:
       - ♻️ 自动选择
       - DIRECT
@@ -97,7 +96,6 @@ proxy-groups:
 {{end}}
   - name: ♻️ 自动选择
     type: url-test
-    interface-name: WLAN
     url: http://www.gstatic.com/generate_204
     interval: 60
     tolerance: 50
@@ -107,7 +105,6 @@ proxy-groups:
 {{end}}
   - name: 🌍 国外媒体
     type: select
-    interface-name: WLAN
     proxies:
       - 🚀 节点选择
       - ♻️ 自动选择
@@ -117,7 +114,6 @@ proxy-groups:
 {{end}}
   - name: 📲 电报信息
     type: select
-    interface-name: WLAN
     proxies:
       - 🚀 节点选择
       - 🎯 全球直连
@@ -126,7 +122,6 @@ proxy-groups:
 {{end}}
   - name: Ⓜ️ 微软服务
     type: select
-    interface-name: WLAN
     proxies:
       - 🎯 全球直连
       - 🚀 节点选择
@@ -135,7 +130,6 @@ proxy-groups:
 {{end}}
   - name: 🍎 苹果服务
     type: select
-    interface-name: WLAN
     proxies:
       - 🚀 节点选择
       - 🎯 全球直连
@@ -144,26 +138,22 @@ proxy-groups:
 {{end}}
   - name: 🎯 全球直连
     type: select
-    interface-name: WLAN
     proxies:
       - DIRECT
       - 🚀 节点选择
       - ♻️ 自动选择
   - name: 🛑 全球拦截
     type: select
-    interface-name: WLAN
     proxies:
       - REJECT
       - DIRECT
   - name: 🍃 应用净化
     type: select
-    interface-name: WLAN
     proxies:
       - REJECT
       - DIRECT
   - name: 🐟 漏网之鱼
     type: select
-    interface-name: WLAN
     proxies:
       - 🚀 节点选择
       - 🎯 全球直连
@@ -2301,6 +2291,9 @@ rules:
   - IP-CIDR6,2001:67c:4e8::/48,📲 电报信息,no-resolve
   - IP-CIDR6,2001:b28:f23d::/48,📲 电报信息,no-resolve
   - IP-CIDR6,2001:b28:f23f::/48,📲 电报信息,no-resolve
+  - DOMAIN-SUFFIX,stripchat.com,🚀 节点选择
+  - DOMAIN-SUFFIX,battle.net,🚀 节点选择
+  - DOMAIN-SUFFIX,battlenet.com,🚀 节点选择
   - DOMAIN-SUFFIX,1password.com,🚀 节点选择
   - DOMAIN-SUFFIX,v2rayse.com,🚀 节点选择
   - DOMAIN-SUFFIX,vpnse.org,🚀 节点选择
@@ -2811,8 +2804,6 @@ rules:
   - DOMAIN-SUFFIX,hdslb.com,🎯 全球直连
   - DOMAIN-SUFFIX,im9.com,🎯 全球直连
   - DOMAIN-SUFFIX,smtcdns.net,🎯 全球直连
-  - DOMAIN-SUFFIX,battle.net,🎯 全球直连
-  - DOMAIN-SUFFIX,battlenet.com,🎯 全球直连
   - DOMAIN-SUFFIX,blizzard.com,🎯 全球直连
   - DOMAIN-SUFFIX,bytedance.com,🎯 全球直连
   - DOMAIN-SUFFIX,bytedance.net,🎯 全球直连
