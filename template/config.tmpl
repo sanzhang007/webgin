@@ -72,7 +72,7 @@ proxies:
 */}}{{if $proxy.Tfo}}, tfo: {{$proxy.Tfo}}{{end}}{{/*
 */}}{{if $proxy.Tls}}, tls: {{$proxy.Tls}}{{end}}{{/*
 */}}{{if $proxy.AlterId}}, alterId: {{$proxy.AlterId}}{{end}}{{/*
-*/}}{{if $proxy.SkipCertVerify}}, skip-cert-verify: {{$proxy.SkipCertVerify}}{{end}}{{/*
+*/}}{{if $proxy.SkipCertVerify}}, skip-cert-verify: true{{end}}{{/*
 */}}{{if $proxy.Sni}}, sni: {{$proxy.Sni}}{{end}}{{/*
 */}}{{if $proxy.Udp}}, udp: {{$proxy.Udp}}{{end}}{{/*
 */}}{{if $proxy.Obfs}}, obfs: {{$proxy.Obfs}}{{end}}{{/*
@@ -81,7 +81,7 @@ proxies:
 */}}{{if $proxy.ProtocolParam}}, protocol-param: "{{$proxy.ProtocolParam}}"{{end}}{{/*
 */}}{{if $proxy.Network}}, network: {{$proxy.Network}}{{end}}{{/*
 */}}{{if $proxy.WsOpts.Path}}, ws-opts: {path: "{{$proxy.WsOpts.Path}}"{{/*
-*/}}, headers: {host: "{{$proxy.WsOpts.Headers.Host}}"}}{{end}}{{/*
+*/}}{{if $proxy.WsOpts.Headers.Host}}, headers: {host: "{{$proxy.WsOpts.Headers.Host}}"}{{end}}}{{end}}{{/*
 */}}}
 {{end}}
 
