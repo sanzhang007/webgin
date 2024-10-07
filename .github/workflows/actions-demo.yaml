@@ -10,8 +10,8 @@ jobs:
         container_name: mysql
         ports:
           - 3306:3306
-        environment:
-          - MYSQL_ROOT_PASSWORD=123456
+        # environment:
+        #   - MYSQL_ROOT_PASSWORD=123456
 
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
