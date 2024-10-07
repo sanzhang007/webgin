@@ -4,6 +4,15 @@ on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    services:
+    mysql:
+      image: mysql
+      container_name: mysql
+      ports:
+        - 3306:3306
+      environment:
+        - MYSQL_ROOT_PASSWORD=123456
+
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
